@@ -1,0 +1,41 @@
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
+public class Percolation {
+	 // Create n-by-n grid, with all sites blocked
+	 public Percolation(int n) {
+		 
+	 }                
+	 // Open site (row, col) if it is not open already
+	 public void open(int row, int col) {
+		 
+	 }    
+	 
+	 // Is site (row, col) open?
+	 public boolean isOpen(int row, int col) {
+		 
+	 }  
+	 
+	 // Is site (row, col) full?
+	 public boolean isFull(int row, int col) {
+		 
+	 }  
+	
+	 // Number of open sites
+	 public int numberOfOpenSites() {
+		 
+	 }       
+	 
+	// Does the system percolate?
+	 public boolean percolates() {
+		 return true;
+	 }         
+	
+	
+	public static void main(String[] args) {	
+		System.out.println("Hello world!");
+
+	}
+
+}

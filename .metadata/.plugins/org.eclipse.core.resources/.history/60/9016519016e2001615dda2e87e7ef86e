@@ -1,0 +1,124 @@
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
+public class Percolation {
+	// A map to indicate the indices
+	private int[][] siteIndex;
+	// A map to keep track of the sites, 0 if blocked, 1 if opened
+	private boolean[][] siteConnection; 
+	// Size of map
+	private int mapSz;
+	// Create a new instance of weighted quick union
+	WeightedQuickUnionUF myWQU;
+	
+	
+	
+	// Create n-by-n grid, with all sites blocked
+	 public Percolation(int n) {
+		 mapSz = n;
+		 siteIndex = new int[n][n];
+		 siteConnection = new boolean[n][n];
+		 // Set the size of myWQU to mapSz^2 + 2(top and bottom site)
+		 myWQU = new WeightedQuickUnionUF(mapSz * mapSz + 2);
+		 init();
+	 }                
+	 private void init() {
+		 int ind = 0;
+		 for(int i = 0; i < mapSz; i++){
+			 for(int j = 0; j < mapSz; j++){
+				 siteConnection[i][j] = false;
+				 siteIndex[i][j] = ind++;
+			 }
+		 }
+		 connectVirtual();
+	 }
+	 
+	 private void connectVirtual(){
+		 for(int i = 0; i < mapSz; i++){
+			 myWQU.union(siteIndex[0][i], mapSz * mapSz);
+			 myWQU.union(siteIndex[mapSz-1][i], mapSz * mapSz + 1);
+		 }
+	 }
+	 
+	 private void printRoots() {
+		 for(int i = 0; i < mapSz * mapSz + 2; i++){
+			 System.out.println(myWQU.find(i));
+		 }
+	 }
+	 
+	 private void printMap() {
+		 for(int i = 0; i < mapSz; i++){
+			 for(int j = 0; j < mapSz; j++){
+			     System.out.println(siteConnection[i][j]);
+			 }
+			 System.out.println();
+		 }
+	 }
+	 
+	 // Open site (row, col) if it is not open already
+	 public void open(int row, int col) {
+		 if(row <= 0 || col <= 0) throw new IndexOutOfBoundsException("Index out of bounds");
+		 siteConnection[row - 1][col - 1] = true;
+		 
+		 if(row - 2 >= 0 && siteConnection[row - 2][col - 1]){
+			 myWQU.union(siteIndex[row - 2][col - 1], siteIndex[row - 1][col - 1]);
+		 }
+		 if(row < mapSz && siteConnection[row][col - 1]){
+			 myWQU.union(siteIndex[row][col - 1], siteIndex[row - 1][col - 1]);
+		 }
+		 if(col - 2 >= 0 && siteConnection[row - 1][col - 2]){
+			 myWQU.union(siteIndex[row - 1][col - 2], siteIndex[row - 1][col - 1]);
+		 }
+		 if(col < mapSz && siteConnection[row - 1][col]){
+			 myWQU.union(siteIndex[row - 1][col], siteIndex[row - 1][col - 1]);
+		 }
+	 }    
+	 
+	 // Is site (row, col) open?
+	 public boolean isOpen(int row, int col) {
+		 if(row <= 0 || col <= 0) throw new IndexOutOfBoundsException("Index out of bounds");
+		 return siteConnection[row - 1][col - 1];
+	 }  
+	 
+	 // Is site (row, col) full?
+	 public boolean isFull(int row, int col) {
+		 if(row <= 0 || col <= 0) throw new IndexOutOfBoundsException("Index out of bounds");
+		 // Return true only if the site is connected to the top row and it is open
+		 return myWQU.connected(siteIndex[row - 1][col - 1], mapSz) && isOpen(row, col);
+	 }  
+	
+	 // Number of open sites
+	 public int numberOfOpenSites() {
+		 int cnt = 0;
+		 for(int i = 0; i < mapSz; i++){
+			 for(int j = 0; j < mapSz; j++){
+				 if(siteConnection[i][j])
+					 cnt++;
+			 }
+		 }
+		 return cnt;
+	 }       
+	 
+	// Does the system percolate?
+	 public boolean percolates() {
+		 for(int j = 0; j < mapSz; j++){
+			 if(isFull(mapSz - 1, j)){
+				 return true;
+			 }
+		 }
+		 return false;
+	 }         
+	
+	
+	public static void main(String[] args) {	
+		Percolation myPerc = new Percolation(5);
+		
+		
+		
+		myPerc.printMap();
+		myPerc.printRoots();
+		
+	}
+
+}

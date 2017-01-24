@@ -1,0 +1,71 @@
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
+public class Percolation {
+	// A map to indicate the indices
+	private int[][] siteindex;
+	// A map to keep track of the sites, 0 if blocked, 1 if opened
+	private boolean[][] sitemap; 
+	// Size of map
+	private int mapsz;
+	// Create a new instance of weighted quick union
+	WeightedQuickUnionUF myWQU;
+	
+	
+	
+	// Create n-by-n grid, with all sites blocked
+	 public Percolation(int n) {
+		 mapsz = n;
+		 siteindex = new int[n][n];
+		 sitemap = new boolean[n][n];
+		 // Set the size of myWQU to mapsz^2 + 2(top and bottom site)
+		 myWQU = new WeightedQuickUnionUF(mapsz * mapsz + 2);
+		 init();
+	 }                
+	 public void init() {
+		 int ind = 0;
+		 for(int i = 0; i < mapsz; i++){
+			 for(int j = 0; j < mapsz; j++){
+				 sitemap[i][j] = false;
+				 siteindex[i][j] = ind++;
+			 }
+		 }
+	 }
+	 
+	 public void connectVirtual(){
+		 
+	 }
+	 
+	 // Open site (row, col) if it is not open already
+	 public void open(int row, int col) {
+		 
+	 }    
+	 
+	 // Is site (row, col) open?
+	 public boolean isOpen(int row, int col) {
+		 return true;
+	 }  
+	 
+	 // Is site (row, col) full?
+	 public boolean isFull(int row, int col) {
+		 return true;
+	 }  
+	
+	 // Number of open sites
+	 public int numberOfOpenSites() {
+		 return 0;
+	 }       
+	 
+	// Does the system percolate?
+	 public boolean percolates() {
+		 return true;
+	 }         
+	
+	
+	public static void main(String[] args) {	
+		System.out.println("Hello world!");
+
+	}
+
+}

@@ -1,0 +1,54 @@
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+
+public class PercolationStats {
+    private double percStats[];
+    private int numOfTrials;
+    // Perform trials independent experiments on an n-by-n grid
+    public PercolationStats(int n, int trials) {
+        numOfTrials = trials;
+        if(n <= 0 || numOfTrials <= 0) throw new IllegalArgumentException();
+        percStats = new double[numOfTrials];
+        for(int i = 0; i < numOfTrials; i++){
+            Percolation newPerc = new Percolation(n);
+            int openNum = 0;
+            while(!newPerc.percolates()){
+                int p = StdRandom.uniform(1, n + 1);
+                int q = StdRandom.uniform(1, n + 1);
+                if(!newPerc.isOpen(p, q)){
+                    newPerc.open(p, q);
+                    openNum++;
+                    }
+            }
+            percStats[i] = (double) openNum / (n * n);
+        }
+    }
+    // Sample mean of percolation threshold
+    public double mean() {
+        return StdStats.mean(percStats);
+        }
+    // Sample standard deviation of percolation threshold
+    public double stddev() {
+        if (numOfTrials == 1) return Double.NaN;
+        return StdStats.stddev(percStats);
+        }
+    // Low  endpoint of 95% confidence interval
+    public double confidenceLo() {
+        return mean() - 1.96 * stddev() / Math.sqrt(numOfTrials);
+        }                  
+    // high endpoint of 95% confidence interval
+    public double confidenceHi() {
+        return mean() + 1.96 * stddev() / Math.sqrt(numOfTrials);
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        int p = Integer.parseInt(args[0]);
+        if(p <= 0) throw new IllegalArgumentException();
+        int q = Integer.parseInt(args[0]);
+        PercolationStats myStats = new PercolationStats(p,q);
+        System.out.println("mean = " + myStats.mean());
+        System.out.println("stddev = " + myStats.stddev());
+        System.out.println("95% confidence interval = " + myStats.confidenceLo() + ", " + myStats.confidenceHi());
+        }
+
+}
