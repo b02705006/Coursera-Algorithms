@@ -60,7 +60,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             rndQueue[rand] = rndQueue[size];
             // Delete the final item;
             rndQueue[size] = null;
-            if(size * 4 < cap){
+            if(cap / 4 > size){
                 capChange = false;
                 capUpdate(capChange);
             }
@@ -75,7 +75,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         //System.out.print("new capacity = " + newCap);
         @SuppressWarnings("unchecked")
         Item[] newQueue = (Item[]) new Object[newCap];
-        for(int i = 0; i < cap; i++){
+        for(int i = 0; i < size; i++){
             newQueue[i] = rndQueue[i];
         }
         cap = newCap;
@@ -84,7 +84,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
     
     public Item sample(){
-        
+        if(isEmpty()){
+            throw new NoSuchElementException();
+        }
         // Pick a random number(index) from 0 to size - 1
         int rand = StdRandom.uniform(size);
         // Save the selected item
@@ -116,7 +118,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         public Item next(){
             if(!hasNext()){throw new NoSuchElementException();}
             else{
-                if (current >= size || size == 0) throw new java.util.NoSuchElementException();
+                if (current >= size || size() == 0) throw new java.util.NoSuchElementException();
                 return rndQueue[shuffledIndices[current++]];
             }
         }
@@ -127,7 +129,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
 
     public static void main(String[] args) {
-        /* Testing
+        /*
         RandomizedQueue<Integer> myQueue = new RandomizedQueue<>();
         int a,b,c,d,e;
         a = 1;
@@ -138,10 +140,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         myQueue.enqueue(a);
         //myQueue.removeFirst();
         //myQueue.removeFirst();
-        myQueue.enqueue(b);
-        myQueue.enqueue(c);
-        myQueue.enqueue(d);
-        myQueue.enqueue(e);
+        //myQueue.dequeue();
+        //myQueue.enqueue(b);
+        //myQueue.dequeue();
+        //myQueue.dequeue();
+        //myQueue.enqueue(c);
+        //myQueue.enqueue(d);
+        //myQueue.enqueue(e);
+        
+        //myQueue.dequeue();
+        
         //myQueue.removeFirst();
         //myQueue.removeLast();
         Iterator<Integer> myIter = myQueue.iterator();
@@ -149,9 +157,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         while(myIter.hasNext()){
             System.out.print(myIter.next());
         }
-        for(int i = 0; i < 20; i++){
-            System.out.print(myQueue.sample());
-        }
+        //for(int i = 0; i < 20; i++){
+        //    System.out.print(myQueue.sample());
+        //}
         
         //System.out.println("Hello");
         */
