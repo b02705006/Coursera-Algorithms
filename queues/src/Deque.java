@@ -115,7 +115,7 @@ public class Deque<Item> implements Iterable<Item> {
 
 
     public static void main(String[] args) {
-        /* Testing
+        //Testing
         Deque<Integer> myDeck = new Deque<>();
         int a,b,c,d,e;
         a = 1;
@@ -138,6 +138,6 @@ public class Deque<Item> implements Iterable<Item> {
             System.out.print(myIter.next());
         }
         //System.out.println("Hello");
-        */
+        
     }
 }

@@ -1,4 +1,5 @@
 import java.util.Comparator;
+import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.StdDraw;
 
 public class Point implements Comparable<Point> {
@@ -25,7 +26,7 @@ public class Point implements Comparable<Point> {
         /* DO NOT MODIFY */
         StdDraw.point(x, y);
     }
-
+    
     /**
      * Draws the line segment between this point and the specified point
      * to standard draw.
@@ -117,18 +118,13 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /*
-        //StdDraw.setPenRadius(0.05);
-        //StdDraw.setPenColor(StdDraw.BLUE);
-        Point A = new Point(8,7);
-        Point B = new Point(-1,7);
-        //A.draw();
-        //System.out.println(A.toString());
-        //B.draw();
-        A.drawTo(B);
-        
-        //StdDraw.point(0.5, 0.5);
-        //StdDraw.setPenColor(StdDraw.MAGENTA);
-        //StdDraw.line(0.2, 0.2, 0.8, 0.2);
+        StdDraw.setScale(-10, 10);
+        StdDraw.setPenRadius(0.01);
+        StdDraw.setPenColor(StdDraw.BLUE);
+        Point A = new Point(3,-3);
+        Point B = new Point(-3,4);
+        //A.drawTo(B);
+        System.out.println(A.slopeTo(B));
         */
     }
 }
