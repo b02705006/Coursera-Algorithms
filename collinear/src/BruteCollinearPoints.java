@@ -8,9 +8,9 @@ public class BruteCollinearPoints {
     private List<LineSegment> lineSegs = new ArrayList<>();
     private Point[] pointsCopy;
     private int pointLen;
-    private LineSegment[] getLineSeg(){
-        return lineSegs.toArray(new LineSegment[lineSegs.size()]);
-    }
+    //private LineSegment[] getLineSeg(){
+    //    return lineSegs.toArray(new LineSegment[lineSegs.size()]);
+    //}
     
     public BruteCollinearPoints(Point[] points){    // finds all line segments containing 4 points
         // Throw null pointer exception if array is null or any entry is null
@@ -21,7 +21,7 @@ public class BruteCollinearPoints {
             // Copy the points and record the length
             pointsCopy = points.clone();
             pointLen = pointsCopy.length;
-            //System.out.println(pointLen );
+            
             // Sort the copy based on method in Point.java
             Arrays.sort(pointsCopy);
             // Throw illegal argument exception if some points are repeated
@@ -50,25 +50,18 @@ public class BruteCollinearPoints {
             
             
         }
-        
-            
-            
-        
-        
-        
-        
-        
+           
     }    
     public int numberOfSegments(){                  // the number of line segments
         return lineSegs.size();
     }        
     public LineSegment[] segments(){                // the line segments
-        return this.getLineSeg();
+        return lineSegs.toArray(new LineSegment[lineSegs.size()]);
     }                
     
     
     public static void main(String[] args) {
-   
+    
      // read the n points from a file
         In in = new In(args[0]);
         int n = in.readInt();
@@ -85,6 +78,7 @@ public class BruteCollinearPoints {
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
         
+        
         // print and draw the line segments
         BruteCollinearPoints collinear = new BruteCollinearPoints(points);
         for (LineSegment segment : collinear.segments()) {
@@ -94,7 +88,7 @@ public class BruteCollinearPoints {
             StdDraw.show();
         }
         
- 
+     
     }
-
+    
 }

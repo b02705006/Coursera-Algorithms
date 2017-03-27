@@ -18,6 +18,8 @@ public class Point implements Comparable<Point> {
         this.x = x;
         this.y = y;
     }
+ 
+    
 
     /**
      * Draws this point to standard draw.
@@ -117,14 +119,14 @@ public class Point implements Comparable<Point> {
      * Unit tests the Point data type.
      */
     public static void main(String[] args) {
-        /*
+        
         StdDraw.setScale(-10, 10);
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BLUE);
         Point A = new Point(3,-3);
         Point B = new Point(-3,4);
-        //A.drawTo(B);
-        System.out.println(A.slopeTo(B));
-        */
+        A.drawTo(B);
+        //System.out.println(A.slopeTo(B));
+        
     }
 }
