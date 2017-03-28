@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 //import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.In;
@@ -22,28 +23,76 @@ public class FastCollinearPoints {
             throw new java.lang.NullPointerException();
         }
         else{    
+            // Sort based on method in Point.java
+            Arrays.sort(points);
+            
             // Copy the points and record the length
             pointsCopy = points.clone();
             pointLen = pointsCopy.length;
             
-            // Sort the copy based on method in Point.java
-            Arrays.sort(pointsCopy);
+            // TEST : PRINT BOTH ARRAYS
+            /*
+            printPoints(points);
+            System.out.println();
+            printPoints(pointsCopy);
+            */
+            
             // Throw illegal argument exception if some points are repeated
             for(int i = 0; i < pointLen - 1; i++){
                 if(pointsCopy[i].compareTo(pointsCopy[i + 1]) == 0){
                     throw new java.lang.IllegalArgumentException();
                 }
             }
+            
+            
             // Find collinear points
             for(int i = 0; i < pointLen; i++){                
                 // Sort the copy of points by their slope with respect to the base
                 Arrays.sort(pointsCopy,points[i].slopeOrder());
-                int low = 1;
-                int high = 2;
-                int base = i;
+                
+                int index = 1;
+                List<Point> tmpPoints = new ArrayList<>();
+                double curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
+                tmpPoints.add(pointsCopy[index]);
+                
+                //TEST : PRINT
+                printPoints(pointsCopy);
+                //System.out.println();
+                //System.out.println(curSlope);
+                
+                // CAN REPLACE COUNT WITH TMP SIZE?
+                while(index < pointLen - 1){
+                    if(pointsCopy[0].slopeTo(pointsCopy[++index]) == curSlope){
+                        System.out.println("Same slope!");
+                        tmpPoints.add(pointsCopy[index]);
+                    }
+                    else{
+                        System.out.println("Different slope!");
+                        if(tmpPoints.size() < 3){
+                            tmpPoints.clear();
+                            curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
+                            tmpPoints.add(pointsCopy[index]);
+                            //System.out.println(curSlope);
+                        }
+                        else{
+                            Collections.sort(tmpPoints);
+                            // Only add if smallest
+                            if(pointsCopy[0] < tmpPoints.get(0)){
+                                
+                            }
+                        //    printPoints(tmpPoints.toArray(new Point[tmpPoints.size()]));
+                        }
+                    }
+                }
                 
                 
-                /* Test
+                
+                
+                // Test
+                break;
+                
+                // Test
+                /*
                 if(i == 0){
                     System.out.println(points[i].toString());
                     System.out.println();
@@ -52,6 +101,9 @@ public class FastCollinearPoints {
                 */
                            
             }
+            
+        
+            
               
         }
         
@@ -74,7 +126,7 @@ public class FastCollinearPoints {
             points[i] = new Point(x, y);
         }
         FastCollinearPoints collinear = new FastCollinearPoints(points);
-        collinear.printPoints(collinear.pointsCopy);
+        
         /*
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BLUE);
