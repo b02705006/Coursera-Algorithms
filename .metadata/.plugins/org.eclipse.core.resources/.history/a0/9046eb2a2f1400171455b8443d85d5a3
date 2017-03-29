@@ -69,9 +69,19 @@ public class FastCollinearPoints {
                 
                 // CAN REPLACE COUNT WITH TMP SIZE?
                 while(index < pointLen - 1){
-                    if(pointsCopy[0].slopeTo(pointsCopy[++index]) != curSlope){
+                    if(pointsCopy[0].slopeTo(pointsCopy[++index]) == curSlope){
+                        //System.out.println("Same slope!");
+                        tmpPoints.add(pointsCopy[index]);
+                    }
+                    else{
                         //System.out.println("Different slope!");
-                        if(tmpPoints.size() >= 3){
+                        if(tmpPoints.size() < 3){
+                            tmpPoints.clear();
+                            curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
+                            tmpPoints.add(pointsCopy[index]);
+                            //System.out.println(curSlope);
+                        }
+                        else{
                             Collections.sort(tmpPoints);
                             // Only add if smallest
                             if(pointsCopy[0].compareTo(tmpPoints.get(0)) < 0){
@@ -80,11 +90,7 @@ public class FastCollinearPoints {
                             }
                         //    printPoints(tmpPoints.toArray(new Point[tmpPoints.size()]));
                         }
-                        tmpPoints.clear();
-                        curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
-                        //tmpPoints.add(pointsCopy[index]);
                     }
-                    tmpPoints.add(pointsCopy[index]);
                 }
                 
                 
@@ -140,12 +146,14 @@ public class FastCollinearPoints {
             segment.draw();
         }
         StdDraw.show();
-        
-        
-        
+        /*
+        StdDraw.setPenRadius(0.01);
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
         
      // draw the points
-        /*
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);

@@ -140,12 +140,14 @@ public class FastCollinearPoints {
             segment.draw();
         }
         StdDraw.show();
-        
-        
-        
+        /*
+        StdDraw.setPenRadius(0.01);
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
         
      // draw the points
-        /*
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);

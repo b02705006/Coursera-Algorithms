@@ -5,7 +5,6 @@ import java.util.List;
 //import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
-import edu.princeton.cs.algs4.StdOut;
 
 public class FastCollinearPoints {
     
@@ -54,7 +53,6 @@ public class FastCollinearPoints {
             // Find collinear points
             for(int i = 0; i < pointLen; i++){                
                 // Sort the copy of points by their slope with respect to the base
-                // pointsCopy[0] will be itself
                 Arrays.sort(pointsCopy,points[i].slopeOrder());
                 
                 int index = 1;
@@ -69,29 +67,35 @@ public class FastCollinearPoints {
                 
                 // CAN REPLACE COUNT WITH TMP SIZE?
                 while(index < pointLen - 1){
-                    if(pointsCopy[0].slopeTo(pointsCopy[++index]) != curSlope){
-                        //System.out.println("Different slope!");
-                        if(tmpPoints.size() >= 3){
+                    if(pointsCopy[0].slopeTo(pointsCopy[++index]) == curSlope){
+                        System.out.println("Same slope!");
+                        tmpPoints.add(pointsCopy[index]);
+                    }
+                    else{
+                        System.out.println("Different slope!");
+                        if(tmpPoints.size() < 3){
+                            tmpPoints.clear();
+                            curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
+                            tmpPoints.add(pointsCopy[index]);
+                            //System.out.println(curSlope);
+                        }
+                        else{
                             Collections.sort(tmpPoints);
                             // Only add if smallest
                             if(pointsCopy[0].compareTo(tmpPoints.get(0)) < 0){
-                                //printPointList(tmpPoints);
+                                printPointList(tmpPoints);
                                 lineSegs.add(new LineSegment(pointsCopy[0],tmpPoints.get(tmpPoints.size() - 1)));
                             }
                         //    printPoints(tmpPoints.toArray(new Point[tmpPoints.size()]));
                         }
-                        tmpPoints.clear();
-                        curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
-                        //tmpPoints.add(pointsCopy[index]);
                     }
-                    tmpPoints.add(pointsCopy[index]);
                 }
                 
                 
                 
                 
                 // Test
-                //break;
+                break;
                 
                 // Test
                 /*
@@ -111,11 +115,11 @@ public class FastCollinearPoints {
         
     }
     public int numberOfSegments(){
-        return lineSegs.size();
+        return 0;
     }
     
     public LineSegment[] segments(){
-        return lineSegs.toArray(new LineSegment[lineSegs.size()]);
+        return null;
     }
     public static void main(String[] args) {
         // read the n points from a file
@@ -129,23 +133,14 @@ public class FastCollinearPoints {
         }
         FastCollinearPoints collinear = new FastCollinearPoints(points);
         
+        /*
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
         
-        for (LineSegment segment : collinear.segments()) {
-            StdOut.println(segment);
-            segment.draw();
-        }
-        StdDraw.show();
-        
-        
-        
-        
      // draw the points
-        /*
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
