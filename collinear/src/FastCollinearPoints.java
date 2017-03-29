@@ -7,11 +7,14 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
+// SET CLASS PATH
+// export CLASSPATH=.:/home/willy/Documents/Coursera-Algorithms/*:$CLASSPATH
 public class FastCollinearPoints {
     
     private List<LineSegment> lineSegs = new ArrayList<>();
     private Point[] pointsCopy;
     private int pointLen;
+    /*
     private void printPointArray(Point somePoints[]){
         for(int i = 0; i < somePoints.length; i++){
             System.out.println(somePoints[i].toString());
@@ -22,16 +25,23 @@ public class FastCollinearPoints {
             System.out.println(otherPoints.get(i).toString());
         }
     }
+    */
         
     public FastCollinearPoints(Point[] points){         
      // Throw null pointer exception if array is null or any entry is null
         if(points == null || Arrays.asList(points).contains(null)){
             throw new java.lang.NullPointerException();
         }
-        else{    
+        else{
+            Point[] clone = points.clone();
             // Sort based on method in Point.java
-            Arrays.sort(points);
-            
+            Arrays.sort(clone);
+            // Throw illegal argument exception if some points are repeated
+            for(int i = 0; i < clone.length - 1; i++){
+                if(clone[i].compareTo(clone[i + 1]) == 0){
+                    throw new java.lang.IllegalArgumentException();
+                }
+            }
             // Copy the points and record the length
             pointsCopy = points.clone();
             pointLen = pointsCopy.length;
@@ -42,70 +52,53 @@ public class FastCollinearPoints {
             System.out.println();
             printPoints(pointsCopy);
             */
-            
-            // Throw illegal argument exception if some points are repeated
-            for(int i = 0; i < pointLen - 1; i++){
-                if(pointsCopy[i].compareTo(pointsCopy[i + 1]) == 0){
-                    throw new java.lang.IllegalArgumentException();
-                }
-            }
-            
-            
+ 
             // Find collinear points
-            for(int i = 0; i < pointLen; i++){                
-                // Sort the copy of points by their slope with respect to the base
-                // pointsCopy[0] will be itself
-                Arrays.sort(pointsCopy,points[i].slopeOrder());
-                
-                int index = 1;
-                List<Point> tmpPoints = new ArrayList<>();
-                double curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
-                tmpPoints.add(pointsCopy[index]);
-                
-                //TEST : PRINT
-                //printPointArray(pointsCopy);
-                //System.out.println();
-                //System.out.println(curSlope);
-                
-                // CAN REPLACE COUNT WITH TMP SIZE?
-                while(index < pointLen - 1){
-                    if(pointsCopy[0].slopeTo(pointsCopy[++index]) != curSlope){
-                        //System.out.println("Different slope!");
-                        if(tmpPoints.size() >= 3){
-                            Collections.sort(tmpPoints);
-                            // Only add if smallest
-                            if(pointsCopy[0].compareTo(tmpPoints.get(0)) < 0){
-                                //printPointList(tmpPoints);
-                                lineSegs.add(new LineSegment(pointsCopy[0],tmpPoints.get(tmpPoints.size() - 1)));
-                            }
-                        //    printPoints(tmpPoints.toArray(new Point[tmpPoints.size()]));
-                        }
-                        tmpPoints.clear();
-                        curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
-                        //tmpPoints.add(pointsCopy[index]);
-                    }
+            if(pointLen > 3){
+                for(int i = 0; i < pointLen; i++){                
+                    // Sort the copy of points by their slope with respect to the base
+                    // pointsCopy[0] will be itself
+                    Arrays.sort(pointsCopy,clone[i].slopeOrder());
+                    
+                    int index = 1;
+                    List<Point> tmpPoints = new ArrayList<>();
+                    double curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
                     tmpPoints.add(pointsCopy[index]);
-                }
-                
-                
-                
-                
-                // Test
-                //break;
-                
-                // Test
-                /*
-                if(i == 0){
-                    System.out.println(points[i].toString());
-                    System.out.println();
-                    Arrays.sort(pointsCopy,points[i].slopeOrder());
-                }
-                */
-                           
-            }
-            
-        
-            
+                    
+                    // Keep on comparing the new slope with the current slope
+                    while(index < pointLen - 1){
+                        if(pointsCopy[0].slopeTo(pointsCopy[++index]) != curSlope){
+                            // Check on the tmpPoints arraylist when a different slope is found
+                            if(tmpPoints.size() >= 3){
+                                Collections.sort(tmpPoints);
+                                // Only add if smallest
+                                if(pointsCopy[0].compareTo(tmpPoints.get(0)) < 0){
+                                    lineSegs.add(new LineSegment(pointsCopy[0],tmpPoints.get(tmpPoints.size() - 1)));
+                                }
+                            }
+                            // Clear tmpPoints and set new current slope after a line segment is found
+                            tmpPoints.clear();
+                            curSlope = pointsCopy[0].slopeTo(pointsCopy[index]);
+                        }
+                        // Add the point if slope is equal
+                        tmpPoints.add(pointsCopy[index]);
+
+                        // CORNER :  CHECK pointsCopy WHEN SLOPE IS SAME
+                        if(index == pointLen - 1){
+                            if(pointsCopy[0].slopeTo(pointsCopy[index]) == curSlope && tmpPoints.size() >= 3){
+                                Collections.sort(tmpPoints);
+                             // Only add if smallest
+                                if(pointsCopy[0].compareTo(tmpPoints.get(0)) < 0){
+                                    lineSegs.add(new LineSegment(pointsCopy[0],tmpPoints.get(tmpPoints.size() - 1)));
+                                }
+                                tmpPoints.clear();
+                            }
+                            
+                        }
+                    }
+                               
+                } 
+            }        
               
         }
         
@@ -135,6 +128,7 @@ public class FastCollinearPoints {
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
         
+        
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
@@ -155,7 +149,6 @@ public class FastCollinearPoints {
         }
         StdDraw.show();
         */
-
     }
 
 }

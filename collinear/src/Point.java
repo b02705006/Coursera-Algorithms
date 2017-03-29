@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Comparator;
 import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.StdDraw;
@@ -96,7 +97,7 @@ public class Point implements Comparable<Point> {
             public int compare(Point a, Point b){
                 double d = slopeTo(a) - slopeTo(b);
                 if(d > 0) return 1;
-                else if(d == 0) return 0;
+                else if(d == 0 || slopeTo(a) == slopeTo(b)) return 0;
                 return -1;
             }
         };
@@ -123,9 +124,14 @@ public class Point implements Comparable<Point> {
         StdDraw.setScale(-10, 10);
         StdDraw.setPenRadius(0.01);
         StdDraw.setPenColor(StdDraw.BLUE);
-        Point A = new Point(3,-3);
-        Point B = new Point(-3,4);
-        A.drawTo(B);
+        Point A = new Point(1,5);
+        Point B = new Point(1,8);
+        Point C = new Point(1,3);
+        Point[] test = new Point[]{B,C};
+        Arrays.sort(test,A.slopeOrder());
+        for(int i = 0; i < test.length; i++){
+            System.out.println(test[i].toString());
+        }
         //System.out.println(A.slopeTo(B));
         
     }
